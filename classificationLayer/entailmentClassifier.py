@@ -13,6 +13,6 @@ def entailmentClassifier(entailmentClassifierTokenizer, entailmentClassifierMode
   return entailmentClassification 
 
 
-def findEvidencesEntailmentClassification(entailmentClassifierTokenizer, entailmentClassifierModel, claim, preprocessedEvidences):
-  evidencesEntailmentClassification = list(map(entailmentClassifier, [entailmentClassifierTokenizer]*len(preprocessedEvidences), [entailmentClassifierModel]*len(preprocessedEvidences), [claim]*len(preprocessedEvidences), preprocessedEvidences))
-  return evidencesEntailmentClassification
+def findEntailmentClassificationOfEachEvidence(entailmentClassifierTokenizer, entailmentClassifierModel, claim, preprocessedEvidences):
+  entailmentClassificationOfEachEvidenceList = list(map(entailmentClassifier, [entailmentClassifierTokenizer]*len(preprocessedEvidences), [entailmentClassifierModel]*len(preprocessedEvidences), [claim]*len(preprocessedEvidences), preprocessedEvidences))
+  return entailmentClassificationOfEachEvidenceList 

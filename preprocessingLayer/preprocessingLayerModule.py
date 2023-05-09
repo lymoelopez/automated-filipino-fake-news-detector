@@ -1,5 +1,5 @@
 from textCleaning import *
-from tokenization import *
+from tokenizer import *
 
 def preprocessingLayer(text, tokenizer):
 

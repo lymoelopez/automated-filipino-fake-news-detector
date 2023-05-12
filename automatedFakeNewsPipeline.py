@@ -7,13 +7,13 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 def automatedFakeNewsPipeline(inputClaim):
 
-  cosineSimilarityModel = SentenceTransformer("./automated-filipino-fake-news-detector/transformerModels/danjohnvelasco/filipino-sentence-roberta-v1")
+  cosineSimilarityModel = SentenceTransformer("danjohnvelasco/filipino-sentence-roberta-v1")
   filteredUrlList, extractedArticlesList, topFiveEvidences = evidenceCollector(inputClaim, cosineSimilarityModel)
 
-  preprocessingTokenizer = AutoTokenizer.from_pretrained("./automated-filipino-fake-news-detector/transformerModels/danjohnvelasco/filipino-sentence-roberta-v1")
+  preprocessingTokenizer = AutoTokenizer.from_pretrained("danjohnvelasco/filipino-sentence-roberta-v1")
   preprocessedEvidences = findPreprocessedEvidences(topFiveEvidences, preprocessingTokenizer)
 
-  transformerModel = './automated-filipino-fake-news-detector/transformerModels/jcblaise/electra-tagalog-small-uncased-discriminator-newsphnli'
+  transformerModel = 'jcblaise/electra-tagalog-small-uncased-discriminator-newsphnli'
   entailmentClassifierTokenizer = AutoTokenizer.from_pretrained(transformerModel)
   entailmentClassifierModel = AutoModelForSequenceClassification.from_pretrained(transformerModel)
 

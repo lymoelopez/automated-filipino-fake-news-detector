@@ -1,5 +1,5 @@
 from evidenceCollector.evidenceCollectorModule import *
-from preprocessingLayer.preprocessingLayerModule import *
+from preprocessingLayer.findPreprocessedEvidences import *
 from classificationLayer.classificationLayerModule import *
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, AutoModelForSequenceClassification

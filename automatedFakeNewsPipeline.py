@@ -11,7 +11,7 @@ def automatedFakeNewsPipeline(inputClaim):
   filteredUrlList, extractedArticlesList, topFiveEvidences = evidenceCollector(inputClaim, cosineSimilarityModel)
 
   preprocessingTokenizer = AutoTokenizer.from_pretrained("danjohnvelasco/filipino-sentence-roberta-v1")
-  preprocessedEvidences = preprocessingLayer(topFiveEvidences, preprocessingTokenizer)
+  preprocessedEvidences = findPreprocessedEvidences(topFiveEvidences, preprocessingTokenizer)
 
   transformerModel = 'jcblaise/electra-tagalog-small-uncased-discriminator-newsphnli'
   entailmentClassifierTokenizer = AutoTokenizer.from_pretrained(transformerModel)

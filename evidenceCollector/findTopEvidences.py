@@ -27,27 +27,31 @@ def findNumberOfEvidences(extractedArticlesList):
 
   return numberOfEvidences
 
-def findHighestSimilarityScoresIndex(inputClaim, extractedArticlesList, model):
+def findHighestSimilarityScores(inputClaim, extractedArticlesList, model):
 
   numberOfEvidences = findNumberOfEvidences(extractedArticlesList)
 
   similarityScores = findSimilarityScores(inputClaim, extractedArticlesList, model)
   highestSimilarityScoresIndex = np.argpartition(similarityScores,-numberOfEvidences)[-numberOfEvidences:]
+  highestSimilarityScores = similarityScores[highestSimilarityScoresIndex]
+  
+  return  highestSimilarityScores, highestSimilarityScoresIndex
 
-  return  highestSimilarityScoresIndex
+def sortIndexBasedOnOriginalList(indexList, originalList):
+  sortedIndexList = indexList[np.argsort(originalList)[::-1]]
+  return sortedIndexList
 
 def findTopList(givenList, topIndex):
-
   numpyList = np.array(givenList)
   topList = numpyList[topIndex]
-
   return topList
 
 def findTopEvidences(inputClaim, extractedArticlesList, filteredUrlList, model):
 
-  highestSimilarityScoresIndex = findHighestSimilarityScoresIndex(inputClaim, extractedArticlesList, model)
+  highestSimilarityScores, highestSimilarityScoresIndex = findHighestSimilarityScores(inputClaim, extractedArticlesList, model)
+  sortedHighestSimilarityScoresIndex  = sortIndexBasedOnOriginalList(highestSimilarityScoresIndex, highestSimilarityScores)
 
-  topEvidences = findTopList(extractedArticlesList, highestSimilarityScoresIndex)
-  topEvidencesUrl = findTopList(filteredUrlList, highestSimilarityScoresIndex)
+  topEvidences = findTopList(extractedArticlesList, sortedHighestSimilarityScoresIndex)
+  topEvidencesUrl = findTopList(filteredUrlList, sortedHighestSimilarityScoresIndex)
 
   return topEvidences, topEvidencesUrl

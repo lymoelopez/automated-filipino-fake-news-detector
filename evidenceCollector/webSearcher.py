@@ -8,20 +8,18 @@ def URLfilter(url):
   if all(excludedURL not in lowercasedURL for excludedURL in URL_banList):
     return url
      
-def webSearcher(inputClaim, numOfResults=20):
+def webSearcher(inputClaim, numOfSearchResults):
 
   filteredList = []
   
-  while len(filteredList) <= numOfResults:
-    if len(filteredList) >= numOfResults:
+  while len(filteredList) <= numOfSearchResults:
+    if len(filteredList) >= numOfSearchResults:
       break
-    for url in search(inputClaim, lang="tl", num=numOfResults, pause=3):
+    for url in search(inputClaim, lang="tl", num=numOfSearchResults, pause=3):
       filteredURL = URLfilter(url)
       if filteredURL and (filteredURL not in filteredList):
         filteredList.append(filteredURL)
-      if len(filteredList) >= numOfResults:
+      if len(filteredList) >= numOfSearchResults:
         break
 
     return filteredList
-     
-#print(webSearcher("Phased out na ang mga jeep",5))

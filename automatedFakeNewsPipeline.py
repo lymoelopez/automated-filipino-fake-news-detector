@@ -13,7 +13,7 @@ def automatedFakeNewsPipeline(inputClaim):
 
   topEvidences, topEvidencesUrl = evidenceCollector(inputClaim, cosineSimilarityModel, numOfSearchResults)
   
-  if len(topEvidencesUrl) == 0 :
+  if len(topEvidencesUrl) == 0:
     finalPrediction = 1
   else:
     preprocessedEvidences = findPreprocessedEvidences(topEvidences, preprocessingTokenizer)

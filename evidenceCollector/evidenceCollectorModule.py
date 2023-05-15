@@ -1,12 +1,12 @@
 from webSearcher import *
 from articleExtractor import *
-from findTopFiveEvidences import *
+from findTopEvidences import * 
 
 
-def evidenceCollector(inputClaim, model):
+def evidenceCollector(inputClaim, model, numOfSearchResults=20):
 
-  filteredUrlList = webSearcher(inputClaim, 20)
+  filteredUrlList = webSearcher(inputClaim, numOfSearchResults)
   extractedArticlesList = createExtractedArticlesList(filteredUrlList)
-  topFiveEvidences = findTopFiveEvidences(inputClaim, extractedArticlesList, model)
+  topEvidences, topEvidencesUrl = findTopEvidences(inputClaim, extractedArticlesList, filteredUrlList,model)
 
-  return filteredUrlList, extractedArticlesList, topFiveEvidences
+  return topEvidences, topEvidencesUrl

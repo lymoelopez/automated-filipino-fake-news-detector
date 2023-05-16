@@ -11,7 +11,7 @@ def articleExtractor(url, articleExtractorConfig):
     article.download()
     article.parse()
 
-  except requests.exceptions.HTTError as error:
+  except requests.exceptions.HTTPError as error:
 
     if error.response.status_code == 429:
       print("Too many requests. Waiting for a while before trying again . . . ")

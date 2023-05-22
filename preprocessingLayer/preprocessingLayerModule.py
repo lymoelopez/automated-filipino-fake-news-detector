@@ -1,8 +1,11 @@
-from textCleaning import *
-from tokenizer import *
+from textCleaning import findCleanedText
+from tokenizer import findBPE
 
-def preprocessingLayer(text, tokenizer):
 
-  cleanedText = removeCharactersAndLowercase(text)
-  tokenizedText = findBPE(cleanedText, tokenizer)
-  return tokenizedText
+def preprocessingLayer(text, preprocessingTokenizer):
+  
+  cleanedText = findCleanedText(text)
+  tokenizedText = findBPE(cleanedText, preprocessingTokenizer)
+  preprocessedText = tokenizedText
+
+  return preprocessedText

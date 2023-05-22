@@ -1,10 +1,9 @@
-from entailmentClassifier import *
-from votingClassifier import *
+from entailmentClassifier import findEntailmentClassificationOfEachEvidence
+from votingClassifier import votingClassifier
 
 
-def classificationLayer(entailmentClassifierTokenizer, entailmentClassifierModel, claim, preprocessedEvidences):
-  entailmentClassificationOfEachEvidence = findEntailmentClassificationOfEachEvidence(entailmentClassifierTokenizer, entailmentClassifierModel, claim, preprocessedEvidences)
+def classificationLayer(entailmentClassifierTokenizer, entailmentClassifierModel, inputClaim, preprocessedEvidences):
+  entailmentClassificationOfEachEvidence = findEntailmentClassificationOfEachEvidence(entailmentClassifierTokenizer, entailmentClassifierModel, inputClaim, preprocessedEvidences)
   votingClassifierPrediction = votingClassifier(entailmentClassificationOfEachEvidence)
 
   return votingClassifierPrediction
-  

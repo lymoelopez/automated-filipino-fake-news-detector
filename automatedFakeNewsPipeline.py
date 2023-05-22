@@ -1,17 +1,17 @@
-from evidenceCollector.evidenceCollectorModule import *
-from preprocessingLayer.findPreprocessedEvidences import *
-from classificationLayer.classificationLayerModule import *
-from automatedFakeNewsConfig import * 
+from evidenceCollector.evidenceCollectorModule import evidenceCollector
+from preprocessingLayer.findPreprocessedEvidences import findPreprocessedEvidences
+from classificationLayer.classificationLayerModule import classificationLayer
+from automatedFakeNewsConfig import automatedFakeNewsConfig
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 
 def automatedFakeNewsPipeline(inputClaim):
 
-  numOfSearchResults, cosineSimilarityModel, preprocessingTokenizer, transformerModel = automatedFakeNewsConfig()
+  urlBanList, cosineSimilarityModel, preprocessingTokenizer, transformerModel = automatedFakeNewsConfig()
   entailmentClassifierTokenizer = AutoTokenizer.from_pretrained(transformerModel)
   entailmentClassifierModel = AutoModelForSequenceClassification.from_pretrained(transformerModel)
 
-  topEvidences, topEvidencesUrl = evidenceCollector(inputClaim, cosineSimilarityModel, numOfSearchResults)
+  topEvidences, topEvidencesUrl = evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel)
   
   if len(topEvidencesUrl) == 0:
     finalPrediction = 1

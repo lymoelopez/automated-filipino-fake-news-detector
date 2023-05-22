@@ -1,7 +1,6 @@
-from  preprocessingLayerModule import *
+from  preprocessingLayerModule import preprocessingLayer
 
 
-def findPreprocessedEvidences(topFiveEvidences, preprocessingTokenizer):
-  preprocessedEvidences = list(map(preprocessingLayer, topFiveEvidences, [preprocessingTokenizer]*len(topFiveEvidences)))
-
+def findPreprocessedEvidences(topEvidences, preprocessingTokenizer):
+  preprocessedEvidences = list(map(preprocessingLayer, topEvidences, [preprocessingTokenizer]*len(topEvidences)))
   return preprocessedEvidences

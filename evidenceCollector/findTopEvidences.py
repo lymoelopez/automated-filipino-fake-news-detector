@@ -2,12 +2,12 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 
-def findSimilarityScores(inputClaim, extractedArticlesList, model):
+def findSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel):
 
-  # append claim in front of extracted articles list
-  sentences = list(extractedArticlesList)
+  # append claim in front of url body/content list
+  sentences = list(urlBodyList)
   sentences.insert(0, inputClaim)
-  sentenceEmbeddings = model.encode(sentences)
+  sentenceEmbeddings = cosineSimilarityModel.encode(sentences)
 
   similarityScores = cosine_similarity(
       [sentenceEmbeddings[0]],
@@ -16,9 +16,9 @@ def findSimilarityScores(inputClaim, extractedArticlesList, model):
 
   return similarityScores[0]
 
-def findNumberOfEvidences(extractedArticlesList):
+def findNumberOfEvidences(urlBodyList):
 
-  numberOfArticles = len(extractedArticlesList)
+  numberOfArticles = len(urlBodyList)
 
   if numberOfArticles > 5:
     numberOfEvidences = 5
@@ -27,17 +27,17 @@ def findNumberOfEvidences(extractedArticlesList):
 
   return numberOfEvidences
 
-def findHighestSimilarityScores(inputClaim, extractedArticlesList, model):
+def findHighestSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel):
 
-  numberOfEvidences = findNumberOfEvidences(extractedArticlesList)
+  numberOfEvidences = findNumberOfEvidences(urlBodyList)
 
-  similarityScores = findSimilarityScores(inputClaim, extractedArticlesList, model)
+  similarityScores = findSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel)
   highestSimilarityScoresIndex = np.argpartition(similarityScores,-numberOfEvidences)[-numberOfEvidences:]
   highestSimilarityScores = similarityScores[highestSimilarityScoresIndex]
   
   return  highestSimilarityScores, highestSimilarityScoresIndex
 
-def sortIndexBasedOnOriginalList(indexList, originalList):
+def sortIndexBasedOnOriginalList(originalList, indexList):
   sortedIndexList = indexList[np.argsort(originalList)[::-1]]
   return sortedIndexList
 
@@ -46,12 +46,12 @@ def findTopList(givenList, topIndex):
   topList = numpyList[topIndex]
   return topList
 
-def findTopEvidences(inputClaim, extractedArticlesList, filteredUrlList, model):
+def findTopEvidences(inputClaim, urlBodyList, urlList, cosineSimilarityModel):
 
-  highestSimilarityScores, highestSimilarityScoresIndex = findHighestSimilarityScores(inputClaim, extractedArticlesList, model)
-  sortedHighestSimilarityScoresIndex  = sortIndexBasedOnOriginalList(highestSimilarityScoresIndex, highestSimilarityScores)
+  highestSimilarityScores, highestSimilarityScoresIndex = findHighestSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel)
+  sortedHighestSimilarityScoresIndex  = sortIndexBasedOnOriginalList(highestSimilarityScores, highestSimilarityScoresIndex)
 
-  topEvidences = findTopList(extractedArticlesList, sortedHighestSimilarityScoresIndex)
-  topEvidencesUrl = findTopList(filteredUrlList, sortedHighestSimilarityScoresIndex)
+  topEvidences = findTopList(urlBodyList, sortedHighestSimilarityScoresIndex)
+  topEvidencesUrl = findTopList(urlList, sortedHighestSimilarityScoresIndex)
 
   return topEvidences, topEvidencesUrl

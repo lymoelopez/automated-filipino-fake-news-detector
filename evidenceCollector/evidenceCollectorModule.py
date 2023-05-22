@@ -1,17 +1,15 @@
-from webSearcher import *
-from articleExtractor import *
-from findTopEvidences import * 
+from webSearcher import webSearcher
+from findTopEvidences import findTopEvidences
 
 
-def evidenceCollector(inputClaim, model, numOfSearchResults=20):
+def evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel):
 
-  filteredUrlList = webSearcher(inputClaim, numOfSearchResults)
+  urlList, urlBodyList = webSearcher(inputClaim, urlBanList)
 
-  if len(filteredUrlList) == 0:
+  if len(urlList) == 0:
     topEvidences = []
     topEvidencesUrl = []
   else:
-    extractedArticlesList = createExtractedArticlesList(filteredUrlList)
-    topEvidences, topEvidencesUrl = findTopEvidences(inputClaim, extractedArticlesList, filteredUrlList,model)
+    topEvidences, topEvidencesUrl = findTopEvidences(inputClaim, urlBodyList, urlList, cosineSimilarityModel)
 
   return topEvidences, topEvidencesUrl

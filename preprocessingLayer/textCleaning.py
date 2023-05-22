@@ -1,6 +1,8 @@
 import re
 
-def removeCharactersAndLowercase(text):
+
+def findCleanedText(text):
+  
     text = re.sub('https?://\S+|www\.\S+', '', text)                    # remove URLs
     text = re.sub(r'\S+@\S+', '', text)                                 # remove emails
     text = re.sub(r'#\w+', '', text)                                    # remove hashtags
@@ -11,6 +13,6 @@ def removeCharactersAndLowercase(text):
     text = re.sub(r'[^\x00-\x7f]',r'', text)                            # remove non-ASCII characters (e.g. emojis, greek letters, chinise characters
     text = re.sub('\s+',' ',text)                                       # remove extra whitespaces
     text = text.strip()                                                 # remove whitespaces at the beginning and end of the text
-    text = text.lower()                                                 # convert to lowercase
+    cleanedText = text.lower()                                          # convert to lowercase
 
-    return text
+    return cleanedText

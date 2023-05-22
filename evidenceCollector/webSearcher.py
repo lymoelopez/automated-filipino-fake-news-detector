@@ -1,25 +1,27 @@
-from googlesearch import search
+from duckduckgo_search import DDGS
 
 
-URL_banList = ["facebook", "twitter", "youtube", "pdf", "blog", "tiktok", "instagram", "youtu.be", "mp4", "mp3", "audiobook", "podcast", "spotify", "slideshare", "github", "huggingface"]
-
-def URLfilter(url):
+def urlFilter(url, urlBanList):
   lowercasedURL = url.lower()
-  if all(excludedURL not in lowercasedURL for excludedURL in URL_banList):
+  if all(excludedURL not in lowercasedURL for excludedURL in urlBanList):
     return url
-     
-def webSearcher(inputClaim, numberOfSearchResults):
 
-  filteredList = []
+def duckDuckGoSearch(inputClaim):
+  duckDuckGoSearch = DDGS()
+  duckDuckGoTextSearchGenerator = duckDuckGoSearch.text(inputClaim, region='ph-tl', safesearch='Off')
+  return duckDuckGoTextSearchGenerator 
+
+def webSearcher(inputClaim, urlBanList):
   
-  while len(filteredList) <= numberOfSearchResults:
-    if len(filteredList) >= numberOfSearchResults:
-      break
-    for url in search(inputClaim, lang="tl", num=numberOfSearchResults, pause=5):
-      filteredURL = URLfilter(url)
-      if filteredURL and (filteredURL not in filteredList):
-        filteredList.append(filteredURL)
-      if len(filteredList) >= numberOfSearchResults:
-        break
+  urlList = []
+  urlBodyList = []
+  
+  duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
 
-    return filteredList
+  for searchResult in duckDuckGoTextSearchGenerator:
+ 
+    if urlFilter(searchResult["href"], urlBanList):
+      urlList.append(searchResult["href"])
+      urlBodyList.append(searchResult["body"])
+
+  return urlList, urlBodyList

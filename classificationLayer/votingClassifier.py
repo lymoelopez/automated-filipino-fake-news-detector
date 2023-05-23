@@ -1,7 +1,6 @@
 import statistics as stat
 
 
-def votingClassifier(evidencesEntailmentPrediction):
-  votingClassifierPrediction = stat.mode(evidencesEntailmentPrediction)
+def votingClassifier(entailmentClassificationOfEachEvidence):
+  votingClassifierPrediction = stat.mode(entailmentClassificationOfEachEvidence)
   return votingClassifierPrediction
-  

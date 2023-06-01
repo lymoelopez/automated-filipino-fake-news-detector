@@ -12,9 +12,9 @@ def duckDuckGoSearch(inputClaim):
   return duckDuckGoTextSearchGenerator 
 
 def webSearcher(inputClaim, urlBanList):
-  
+
   urlList = []
-  urlBodyList = []
+  urlContentList = []
   
   duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
 
@@ -22,6 +22,6 @@ def webSearcher(inputClaim, urlBanList):
  
     if urlFilter(searchResult["href"], urlBanList):
       urlList.append(searchResult["href"])
-      urlBodyList.append(searchResult["body"])
+      urlContentList.append(searchResult["title"] + " " + searchResult["body"])
 
-  return urlList, urlBodyList
+  return urlList, urlContentList

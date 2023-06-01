@@ -2,10 +2,10 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 
 
-def findSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel):
+def findSimilarityScores(inputClaim, urlContentList, cosineSimilarityModel):
 
   # append claim in front of url body/content list
-  sentences = list(urlBodyList)
+  sentences = list(urlContentList)
   sentences.insert(0, inputClaim)
   sentenceEmbeddings = cosineSimilarityModel.encode(sentences)
 
@@ -16,9 +16,9 @@ def findSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel):
 
   return similarityScores[0]
 
-def findNumberOfEvidences(urlBodyList):
+def findNumberOfEvidences(urlContentList):
 
-  numberOfArticles = len(urlBodyList)
+  numberOfArticles = len(urlContentList)
 
   if numberOfArticles > 5:
     numberOfEvidences = 5
@@ -27,11 +27,11 @@ def findNumberOfEvidences(urlBodyList):
 
   return numberOfEvidences
 
-def findHighestSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel):
+def findHighestSimilarityScores(inputClaim, urlContentList, cosineSimilarityModel):
 
-  numberOfEvidences = findNumberOfEvidences(urlBodyList)
+  numberOfEvidences = findNumberOfEvidences(urlContentList)
 
-  similarityScores = findSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel)
+  similarityScores = findSimilarityScores(inputClaim, urlContentList, cosineSimilarityModel)
   highestSimilarityScoresIndex = np.argpartition(similarityScores,-numberOfEvidences)[-numberOfEvidences:]
   highestSimilarityScores = similarityScores[highestSimilarityScoresIndex]
   
@@ -43,15 +43,15 @@ def sortIndexBasedOnOriginalList(originalList, indexList):
 
 def findTopList(givenList, topIndex):
   numpyList = np.array(givenList)
-  topList = numpyList[topIndex]
+  topList = numpyList[topIndex].tolist()
   return topList
 
-def findTopEvidences(inputClaim, urlBodyList, urlList, cosineSimilarityModel):
+def evidenceSelector(inputClaim, urlContentList, urlList, cosineSimilarityModel):
 
-  highestSimilarityScores, highestSimilarityScoresIndex = findHighestSimilarityScores(inputClaim, urlBodyList, cosineSimilarityModel)
+  highestSimilarityScores, highestSimilarityScoresIndex = findHighestSimilarityScores(inputClaim, urlContentList, cosineSimilarityModel)
   sortedHighestSimilarityScoresIndex  = sortIndexBasedOnOriginalList(highestSimilarityScores, highestSimilarityScoresIndex)
 
-  topEvidences = findTopList(urlBodyList, sortedHighestSimilarityScoresIndex)
+  topEvidences = findTopList(urlContentList, sortedHighestSimilarityScoresIndex)
   topEvidencesUrl = findTopList(urlList, sortedHighestSimilarityScoresIndex)
 
   return topEvidences, topEvidencesUrl

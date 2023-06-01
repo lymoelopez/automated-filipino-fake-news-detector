@@ -1,13 +1,50 @@
 from sentence_transformers import SentenceTransformer
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, pipeline, AutoModelForSeq2SeqLM
+from langchain import PromptTemplate, LLMChain
+from langchain.llms import HuggingFacePipeline
 
 
-def automatedFakeNewsConfig():
+def findLLMHuggingFacePipeline(llmModelID, task="text2text-generation"):
+  llmTokenizer = AutoTokenizer.from_pretrained(llmModelID)
+  llmModel = AutoModelForSeq2SeqLM.from_pretrained(llmModelID)
 
-  urlBanList = ["facebook", "twitter", "youtube", "pdf", "blog", "tiktok", "instagram", "youtu.be", "mp4", "mp3", "audiobook", "podcast", "spotify", "slideshare", "github", "huggingface", "reddit", "bible", "dailymotion"]
+  llmHuggingFacePipeline = pipeline(
+      task,
+      model=llmModel, 
+      tokenizer=llmTokenizer, 
+      max_length=100
+  )
 
-  cosineSimilarityModel = SentenceTransformer("danjohnvelasco/filipino-sentence-roberta-v1")
-  preprocessingTokenizer = AutoTokenizer.from_pretrained("danjohnvelasco/filipino-sentence-roberta-v1")
-  transformerModel = 'jcblaise/electra-tagalog-small-uncased-discriminator-newsphnli'
+  return llmHuggingFacePipeline
 
-  return  urlBanList, cosineSimilarityModel, preprocessingTokenizer, transformerModel
+def findLLM(llmModelID, promptStringTemplate):
+
+  llmPromptTemplate = PromptTemplate(
+    input_variables=["evidence", "claim", "currentDate"],
+    template=promptStringTemplate
+  )
+
+  llmHuggingFacePipeline = findLLMHuggingFacePipeline(llmModelID)
+  llm = HuggingFacePipeline(pipeline=llmHuggingFacePipeline)
+
+  llmWithPromptTemplate = LLMChain(prompt=llmPromptTemplate, llm=llm)
+
+  return llm, llmWithPromptTemplate
+
+def automatedFakeNewsConfig(
+    urlBanList = ["facebook", "twitter", "youtube", "blog", "tiktok", "instagram", "youtu.be", "mp4", "mp3", "audiobook", "podcast", "spotify", "slideshare", "github", "huggingface", "reddit", "bible", "dailymotion"],
+    cosineSimilarityModelID = "danjohnvelasco/filipino-sentence-roberta-v1", 
+    llmModelID = "google/flan-t5-base",
+    promptStringTemplate = """Evidence: {evidence}
+
+      Claim: {claim}
+
+      Current Date: {currentDate}
+
+      Question: can the Claim be inferred from the given Evidence? """,
+):
+
+  cosineSimilarityModel = SentenceTransformer(cosineSimilarityModelID)
+  llm, llmWithPromptTemplate  = findLLM(llmModelID, promptStringTemplate)
+
+  return urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate

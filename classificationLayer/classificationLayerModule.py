@@ -1,9 +1,10 @@
-from entailmentClassifier import findEntailmentClassificationOfEachEvidence
+from llmClassifier  import llmClassifier 
 from votingClassifier import votingClassifier
 
 
-def classificationLayer(entailmentClassifierTokenizer, entailmentClassifierModel, inputClaim, preprocessedEvidences):
-  entailmentClassificationOfEachEvidence = findEntailmentClassificationOfEachEvidence(entailmentClassifierTokenizer, entailmentClassifierModel, inputClaim, preprocessedEvidences)
-  votingClassifierPrediction = votingClassifier(entailmentClassificationOfEachEvidence)
+def classificationLayer(inputClaim, preprocessedEvidences, llmWithPromptTemplate):
+
+  classificationOfEachEvidence = list(map(llmClassifier , [inputClaim]*len(preprocessedEvidences), preprocessedEvidences, [llmWithPromptTemplate]*len(preprocessedEvidences)))
+  votingClassifierPrediction = votingClassifier(classificationOfEachEvidence)
 
   return votingClassifierPrediction

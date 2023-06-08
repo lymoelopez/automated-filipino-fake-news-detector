@@ -2,9 +2,10 @@ from llmClassifier  import llmClassifier
 from votingClassifier import votingClassifier
 
 
-def classificationLayer(inputClaim, preprocessedEvidences, llmWithPromptTemplate):
+def classificationLayer(inputClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate):
 
-  classificationOfEachEvidence = list(map(llmClassifier , [inputClaim]*len(preprocessedEvidences), preprocessedEvidences, [llmWithPromptTemplate]*len(preprocessedEvidences)))
+  numberOfEvidences = len(preprocessedEvidences)
+  classificationOfEachEvidence = list(map(llmClassifier , [inputClaim]*numberOfEvidences, preprocessedEvidences, [llmWithPromptTemplate]*numberOfEvidences))
   votingClassifierPrediction = votingClassifier(classificationOfEachEvidence)
 
   return votingClassifierPrediction

@@ -14,14 +14,22 @@ def duckDuckGoSearch(inputClaim):
 def webSearcher(inputClaim, urlBanList):
 
   urlList = []
-  urlContentList = []
-  
+  urlTitleList = []
+  urlBodyList = []
+  maxSearchResults = 20
   duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
-
+  
   for searchResult in duckDuckGoTextSearchGenerator:
- 
-    if urlFilter(searchResult["href"], urlBanList):
-      urlList.append(searchResult["href"])
-      urlContentList.append(searchResult["title"] + " " + searchResult["body"])
 
-  return urlList, urlContentList
+    if len(urlList) != maxSearchResults:
+      if urlFilter(searchResult["href"], urlBanList):
+        urlList.append(searchResult["href"])
+        urlTitleList.append(searchResult["title"])
+        urlBodyList.append(searchResult["body"])
+
+    else:
+      filteredSearchResults = [urlList, urlTitleList, urlBodyList]
+      return filteredSearchResults 
+
+  filteredSearchResults = [urlList, urlTitleList, urlBodyList]
+  return filteredSearchResults

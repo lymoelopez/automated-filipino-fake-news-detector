@@ -1,6 +1,7 @@
 from textCleaning import findCleanedText
 
 
-def preprocessingLayer(topEvidences):
+def preprocessingLayer(inputClaim, topEvidences):
+  preprocessedClaim = findCleanedText(inputClaim)
   preprocessedEvidences = list(map(findCleanedText, topEvidences))
-  return preprocessedEvidences
+  return preprocessedClaim, preprocessedEvidences

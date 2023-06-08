@@ -4,12 +4,12 @@ from evidenceSelector import evidenceSelector
 
 def evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel):
 
-  urlList, urlContentList = webSearcher(inputClaim, urlBanList)
-
-  if len(urlList) == 0:
-    topEvidences = []
-    topEvidencesUrl = []
+  filteredSearchResults = webSearcher(inputClaim, urlBanList)
+  
+  if len(filteredSearchResults[0]) == 0:
+    topEvidences = [[],[],[],[]]
+    highestSimilarityScores = []
   else:
-    topEvidences, topEvidencesUrl = evidenceSelector(inputClaim, urlContentList, urlList, cosineSimilarityModel)
+    topEvidences, highestSimilarityScores = evidenceSelector(inputClaim, filteredSearchResults, cosineSimilarityModel)
 
-  return topEvidences, topEvidencesUrl
+  return topEvidences, highestSimilarityScores

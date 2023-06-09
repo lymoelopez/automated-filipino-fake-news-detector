@@ -6,12 +6,20 @@ def urlFilter(url, urlBanList):
   if all(excludedURL not in lowercasedURL for excludedURL in urlBanList):
     return url
 
-def duckDuckGoSearch(inputClaim):
+def duckDuckGoSearch(searchQuery):
   duckDuckGoSearch = DDGS()
-  duckDuckGoTextSearchGenerator = duckDuckGoSearch.text(inputClaim, region='ph-tl', safesearch='Off')
+  duckDuckGoTextSearchGenerator = duckDuckGoSearch.text(searchQuery, region='ph-tl', safesearch='Off')
   return duckDuckGoTextSearchGenerator 
 
+def duckDuckGoBangsRemover(searchQuery):
+  if searchQuery[-2:] == " !":
+    return searchQuery[:-2] + "!"
+  else:
+    return searchQuery
+
 def webSearcher(inputClaim, urlBanList):
+  
+  inputClaim = duckDuckGoBangsRemover(inputClaim)
 
   urlList = []
   urlTitleList = []

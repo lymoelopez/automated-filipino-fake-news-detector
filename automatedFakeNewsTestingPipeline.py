@@ -3,14 +3,14 @@ from preprocessingLayer.preprocessingLayerModule import preprocessingLayer
 from classificationLayer.classificationLayerModule import classificationLayer
 from automatedFakeNewsConfig import automatedFakeNewsConfig
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from progressBar import progressBar
+from progressBar import progressBar, testingProgress
 
 
-progressBar = testingProgress()
+predictionProgressBar = testingProgress()
 
 def automatedFakeNewsTestingPipeline(inputClaim, filteredSearchResults, config=automatedFakeNewsConfig(currentDate="June 09 2023")):
 
-  progressBar.showProgress()
+  predictionProgressBar.showProgress()
   
   if len(filteredSearchResults[0]) == 0:
     finalPrediction = 1

@@ -12,10 +12,9 @@ def duckDuckGoSearch(searchQuery):
   return duckDuckGoTextSearchGenerator 
 
 def duckDuckGoBangsRemover(searchQuery):
-  if searchQuery[-2:] == " !":
-    return searchQuery[:-2] + "!"
-  else:
-    return searchQuery
+  reversedQuery = searchQuery[::-1]
+  newQuery = reversedQuery.replace("!", "!\\",1)[::-1]
+  return newQuery
 
 def webSearcher(inputClaim, urlBanList):
   

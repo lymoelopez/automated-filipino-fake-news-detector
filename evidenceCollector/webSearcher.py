@@ -11,14 +11,7 @@ def duckDuckGoSearch(searchQuery):
   duckDuckGoTextSearchGenerator = duckDuckGoSearch.text(searchQuery, region='ph-tl', safesearch='Off')
   return duckDuckGoTextSearchGenerator 
 
-def duckDuckGoBangsRemover(searchQuery):
-  reversedQuery = searchQuery[::-1]
-  newQuery = reversedQuery.replace("!", "!\\",1)[::-1]
-  return newQuery
-
 def webSearcher(inputClaim, urlBanList):
-  
-  inputClaim = duckDuckGoBangsRemover(inputClaim)
 
   urlList = []
   urlTitleList = []

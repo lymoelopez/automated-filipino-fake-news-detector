@@ -11,7 +11,7 @@ def evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel):
 
   try:
     filteredSearchResults = webSearcher(inputClaim, urlBanList)
-  except:
+  except AssertionError:
     inputClaim = duckDuckGoBangsRemover(inputClaim)
     filteredSearchResults = webSearcher(inputClaim, urlBanList)
   

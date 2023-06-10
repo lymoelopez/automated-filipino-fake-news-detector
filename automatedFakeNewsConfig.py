@@ -1,8 +1,14 @@
-from sentence_transformers import SentenceTransformer
+rom sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, pipeline, AutoModelForSeq2SeqLM
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import HuggingFacePipeline
+from datetime import date
 
+
+def findCurrentDateInText():
+  currentDate = date.today()
+  currentDataInText = currentDate.strftime("%B %d %Y")
+  return currentDataInText 
 
 def findLLMHuggingFacePipeline(llmModelID, task="text2text-generation"):
   llmTokenizer = AutoTokenizer.from_pretrained(llmModelID)
@@ -20,7 +26,8 @@ def findLLMHuggingFacePipeline(llmModelID, task="text2text-generation"):
 def findLLM(llmModelID, promptStringTemplate):
 
   llmPromptTemplate = PromptTemplate(
-    input_variables=["evidence", "claim", "currentDate"],
+    # input_variables=["evidence", "claim", "currentDate"],
+    input_variables=["evidence", "claim"],
     template=promptStringTemplate
   )
 
@@ -35,14 +42,17 @@ def automatedFakeNewsConfig(
     urlBanList = ["facebook", "twitter", "youtube", "blog", "tiktok", "instagram", "youtu.be", "mp4", "mp3", "audiobook", "podcast", "spotify", "slideshare", "github", "huggingface", "reddit", "bible", "dailymotion"],
     cosineSimilarityModelID = "danjohnvelasco/filipino-sentence-roberta-v1", 
     llmModelID = "google/flan-t5-base",
-    promptStringTemplate = """Evidence: {evidence}
+    currentDate = findCurrentDateInText(),
+    llmQuestion = "Question: can the Claim be inferred from the given Evidence? ",
+):
+  
+  promptStringTemplate = """Evidence: {evidence}
 
       Claim: {claim}
 
-      Current Date: {currentDate}
+      """ + f"""Current Date: {currentDate}
 
-      Question: can the Claim be inferred from the given Evidence? """,
-):
+      """ + llmQuestion
 
   cosineSimilarityModel = SentenceTransformer(cosineSimilarityModelID)
   llm, llmWithPromptTemplate  = findLLM(llmModelID, promptStringTemplate)

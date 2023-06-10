@@ -1,22 +1,22 @@
 from evidenceCollector.evidenceCollectorModule import evidenceCollector
-from preprocessingLayer.findPreprocessedEvidences import findPreprocessedEvidences
+from preprocessingLayer.preprocessingLayerModule import preprocessingLayer
 from classificationLayer.classificationLayerModule import classificationLayer
 from automatedFakeNewsConfig import automatedFakeNewsConfig
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 
-def automatedFakeNewsPipeline(inputClaim):
+def automatedFakeNewsPipeline(inputClaim, config=automatedFakeNewsConfig()):
 
-  urlBanList, cosineSimilarityModel, preprocessingTokenizer, transformerModel = automatedFakeNewsConfig()
-  entailmentClassifierTokenizer = AutoTokenizer.from_pretrained(transformerModel)
-  entailmentClassifierModel = AutoModelForSequenceClassification.from_pretrained(transformerModel)
+  inputClaim = inputClaim.lower()
+  urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate = config
+  topEvidences, highestSimilarityScores = evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel)
+  topEvidencesContent = topEvidences[0]
+  topEvidencesDetails = topEvidences[1:]
 
-  topEvidences, topEvidencesUrl = evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel)
-  
-  if len(topEvidencesUrl) == 0:
+  if len(topEvidencesContent) == 0:
     finalPrediction = 1
   else:
-    preprocessedEvidences = findPreprocessedEvidences(topEvidences, preprocessingTokenizer)
-    finalPrediction = classificationLayer(entailmentClassifierTokenizer, entailmentClassifierModel, inputClaim, preprocessedEvidences)
+    preprocessedClaim, preprocessedEvidences = preprocessingLayer(inputClaim, topEvidencesContent)
+    finalPrediction = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate)
 
-  return finalPrediction, topEvidencesUrl
+  return finalPrediction, topEvidencesDetails 

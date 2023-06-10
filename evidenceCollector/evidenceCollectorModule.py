@@ -1,15 +1,15 @@
 from webSearcher import webSearcher
-from findTopEvidences import findTopEvidences
+from evidenceSelector import evidenceSelector
 
 
 def evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel):
 
-  urlList, urlBodyList = webSearcher(inputClaim, urlBanList)
-
-  if len(urlList) == 0:
-    topEvidences = []
-    topEvidencesUrl = []
+  filteredSearchResults = webSearcher(inputClaim, urlBanList)
+  
+  if len(filteredSearchResults[0]) == 0:
+    topEvidences = [[],[],[],[]]
+    highestSimilarityScores = []
   else:
-    topEvidences, topEvidencesUrl = findTopEvidences(inputClaim, urlBodyList, urlList, cosineSimilarityModel)
+    topEvidences, highestSimilarityScores = evidenceSelector(inputClaim, filteredSearchResults, cosineSimilarityModel)
 
-  return topEvidences, topEvidencesUrl
+  return topEvidences, highestSimilarityScores

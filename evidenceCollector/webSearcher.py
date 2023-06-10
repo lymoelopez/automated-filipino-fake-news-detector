@@ -6,22 +6,38 @@ def urlFilter(url, urlBanList):
   if all(excludedURL not in lowercasedURL for excludedURL in urlBanList):
     return url
 
-def duckDuckGoSearch(inputClaim):
+def duckDuckGoSearch(searchQuery):
   duckDuckGoSearch = DDGS()
-  duckDuckGoTextSearchGenerator = duckDuckGoSearch.text(inputClaim, region='ph-tl', safesearch='Off')
+  duckDuckGoTextSearchGenerator = duckDuckGoSearch.text(searchQuery, region='ph-tl', safesearch='Off')
   return duckDuckGoTextSearchGenerator 
+
+def duckDuckGoBangsRemover(searchQuery):
+  if searchQuery[-2:] == " !":
+    return searchQuery[:-2] + "!"
+  else:
+    return searchQuery
 
 def webSearcher(inputClaim, urlBanList):
   
+  inputClaim = duckDuckGoBangsRemover(inputClaim)
+
   urlList = []
+  urlTitleList = []
   urlBodyList = []
-  
+  maxSearchResults = 20
   duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
-
+  
   for searchResult in duckDuckGoTextSearchGenerator:
- 
-    if urlFilter(searchResult["href"], urlBanList):
-      urlList.append(searchResult["href"])
-      urlBodyList.append(searchResult["body"])
 
-  return urlList, urlBodyList
+    if len(urlList) != maxSearchResults:
+      if urlFilter(searchResult["href"], urlBanList):
+        urlList.append(searchResult["href"])
+        urlTitleList.append(searchResult["title"])
+        urlBodyList.append(searchResult["body"])
+
+    else:
+      filteredSearchResults = [urlList, urlTitleList, urlBodyList]
+      return filteredSearchResults 
+
+  filteredSearchResults = [urlList, urlTitleList, urlBodyList]
+  return filteredSearchResults

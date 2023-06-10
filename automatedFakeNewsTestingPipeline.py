@@ -1,5 +1,5 @@
 from evidenceCollector.evidenceSelector import evidenceSelector
-from preprocessingLayer.findPreprocessedEvidences import findPreprocessedEvidences
+from preprocessingLayer.preprocessingLayerModule import preprocessingLayer
 from classificationLayer.classificationLayerModule import classificationLayer
 from automatedFakeNewsConfig import automatedFakeNewsConfig
 from transformers import AutoTokenizer, AutoModelForSequenceClassification

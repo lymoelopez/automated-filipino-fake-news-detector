@@ -1,14 +1,5 @@
-from datetime import date
-
-
-def findCurrentDateInText():
-  currentDate = date.today()
-  currentDataInText = currentDate.strftime("%B %d %Y")
-  return currentDataInText 
-
 def findLLMmmessage(evidence, claim, llmWithPromptTemplate):
-  currentDate = findCurrentDateInText()
-  message = llmWithPromptTemplate.run({"evidence": evidence, "claim": claim, "currentDate": currentDate})
+  message = llmWithPromptTemplate.run({"evidence": evidence, "claim": claim})
   return message
 
 def llmClassifier (inputClaim, evidence, llmWithPromptTemplate):

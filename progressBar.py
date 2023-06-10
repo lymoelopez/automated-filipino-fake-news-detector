@@ -15,7 +15,7 @@ class progressBar:
     else:
       self.currentProgress = self.currentProgress + 1
       
-class testingProgress(progressBar:
+class testingProgress(progressBar):
 
   def showProgress(self):
     print("\r [{0}] {1}%".format('#'*(self.currentProgress//50), math.floor(self.currentProgress/10)), end='`')

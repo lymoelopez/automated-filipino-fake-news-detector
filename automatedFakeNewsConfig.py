@@ -1,4 +1,4 @@
-rom sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, pipeline, AutoModelForSeq2SeqLM
 from langchain import PromptTemplate, LLMChain
 from langchain.llms import HuggingFacePipeline

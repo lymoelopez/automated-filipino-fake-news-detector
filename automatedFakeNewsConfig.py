@@ -26,7 +26,6 @@ def findLLMHuggingFacePipeline(llmModelID, task="text2text-generation"):
 def findLLM(llmModelID, promptStringTemplate):
 
   llmPromptTemplate = PromptTemplate(
-    # input_variables=["evidence", "claim", "currentDate"],
     input_variables=["evidence", "claim"],
     template=promptStringTemplate
   )

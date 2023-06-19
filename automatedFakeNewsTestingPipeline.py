@@ -18,13 +18,13 @@ def automatedFakeNewsTestingPipeline(inputClaim, filteredSearchResults, config=a
     
   else:
     inputClaim = inputClaim.lower()
-    urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate = config
+    urlBanList, cosineSimilarityModel, entailmentClassifier = config
 
     topEvidences, highestSimilarityScores = evidenceSelector(inputClaim, filteredSearchResults, cosineSimilarityModel)
     topEvidencesContent = topEvidences[0]
     topEvidencesUrl = topEvidences[1]
 
     preprocessedClaim, preprocessedEvidences = preprocessingLayer(inputClaim, topEvidencesContent)
-    finalPrediction = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate)
+    finalPrediction = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, entailmentClassifier)
 
   return finalPrediction, topEvidencesUrl

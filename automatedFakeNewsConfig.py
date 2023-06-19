@@ -1,41 +1,6 @@
 from sentence_transformers import SentenceTransformer
-from transformers import AutoTokenizer, pipeline, AutoModelForSeq2SeqLM
-from langchain import PromptTemplate, LLMChain
-from langchain.llms import HuggingFacePipeline
-from datetime import date
+from transformers import AutoTokenizer, pipeline, AutoModelForSeq2SeqLM, AutoModelForSequenceClassification
 
-
-def findCurrentDateInText():
-  currentDate = date.today()
-  currentDataInText = currentDate.strftime("%B %d %Y")
-  return currentDataInText 
-
-def findLLMHuggingFacePipeline(llmModelID, task="text2text-generation"):
-  llmTokenizer = AutoTokenizer.from_pretrained(llmModelID)
-  llmModel = AutoModelForSeq2SeqLM.from_pretrained(llmModelID)
-
-  llmHuggingFacePipeline = pipeline(
-      task,
-      model=llmModel, 
-      tokenizer=llmTokenizer, 
-      max_length=100
-  )
-
-  return llmHuggingFacePipeline
-
-def findLLM(llmModelID, promptStringTemplate):
-
-  llmPromptTemplate = PromptTemplate(
-    input_variables=["evidence", "claim"],
-    template=promptStringTemplate
-  )
-
-  llmHuggingFacePipeline = findLLMHuggingFacePipeline(llmModelID)
-  llm = HuggingFacePipeline(pipeline=llmHuggingFacePipeline)
-
-  llmWithPromptTemplate = LLMChain(prompt=llmPromptTemplate, llm=llm)
-
-  return llm, llmWithPromptTemplate
 
 def automatedFakeNewsConfig(
     urlBanList = ["facebook.com", "twitter.com", "youtube.com", "blogspot.com", "tiktok.com", 
@@ -64,20 +29,13 @@ def automatedFakeNewsConfig(
                   "trendsenthusiast.blogspot.com", "Newsinfomanila.com", "MNLTrend.blogspot.com", "Tribune.net.ph", 
                   "amazon.com", "olx.com", "wattpad.com", "ask.fm", "ebay.com", "twitch.tv", "discord.com"],
     cosineSimilarityModelID = "danjohnvelasco/filipino-sentence-roberta-v1", 
-    llmModelID = "google/flan-t5-base",
-    currentDate = findCurrentDateInText(),
-    llmQuestion = "Question: can the Claim be inferred from the given Evidence? ",
+    transformerModel = "jcblaise/electra-tagalog-small-uncased-discriminator-newsphnli",
 ):
   
-  promptStringTemplate = """Evidence: {evidence}
-
-      Claim: {claim}
-
-      """ + f"""Current Date: {currentDate}
-
-      """ + llmQuestion
-
   cosineSimilarityModel = SentenceTransformer(cosineSimilarityModelID)
-  llm, llmWithPromptTemplate  = findLLM(llmModelID, promptStringTemplate)
-
-  return urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate
+  
+  entailmentClassifierTokenizer = AutoTokenizer.from_pretrained(transformerModel)
+  entailmentClassifierModel = AutoModelForSequenceClassification.from_pretrained(transformerModel)
+  entailmentClassifier = [entailmentClassifierTokenizer, entailmentClassifierModel]
+  
+  return urlBanList, cosineSimilarityModel, entailmentClassifier

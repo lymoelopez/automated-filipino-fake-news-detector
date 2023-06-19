@@ -1,7 +1,7 @@
 import torch
 
 
-def entailmentClassifier(inputClaim, evidence, entailmentClassifier):
+def entailmentClassifierModule(inputClaim, evidence, entailmentClassifier):
 
   entailmentClassifierTokenizer, entailmentClassifierModel = entailmentClassifier
   

@@ -8,7 +8,7 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 def automatedFakeNewsPipeline(inputClaim, config=automatedFakeNewsConfig()):
 
   inputClaim = inputClaim.lower()
-  urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate = config
+  urlBanList, cosineSimilarityModel, entailmentClassifier = config
   topEvidences, highestSimilarityScores = evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel)
   topEvidencesContent = topEvidences[0]
   topEvidencesDetails = topEvidences[1:]
@@ -17,6 +17,6 @@ def automatedFakeNewsPipeline(inputClaim, config=automatedFakeNewsConfig()):
     finalPrediction = 1
   else:
     preprocessedClaim, preprocessedEvidences = preprocessingLayer(inputClaim, topEvidencesContent)
-    finalPrediction = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate)
+    finalPrediction = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, entailmentClassifier)
 
   return finalPrediction, topEvidencesDetails 

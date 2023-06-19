@@ -8,7 +8,7 @@ from progressBar import progressBar, testingProgress
 
 predictionProgressBar = testingProgress()
 
-def automatedFakeNewsTestingPipeline(inputClaim, filteredSearchResults, config=automatedFakeNewsConfig(currentDate="June 09 2023")):
+def automatedFakeNewsTestingPipeline(inputClaim, filteredSearchResults, config=automatedFakeNewsConfig()):
 
   predictionProgressBar.showProgress()
   

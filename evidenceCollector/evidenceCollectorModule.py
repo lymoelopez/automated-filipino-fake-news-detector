@@ -3,9 +3,9 @@ from evidenceSelector import evidenceSelector
 
 
 def evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel):
-
-  filteredSearchResults = webSearcher(inputClaim, urlBanList)
   
+  filteredSearchResults = webSearcher(inputClaim, urlBanList)
+
   if len(filteredSearchResults[0]) == 0:
     topEvidences = [[],[],[],[]]
     highestSimilarityScores = []

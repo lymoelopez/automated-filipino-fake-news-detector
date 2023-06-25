@@ -12,21 +12,26 @@ def duckDuckGoSearch(searchQuery):
   return duckDuckGoTextSearchGenerator 
 
 def duckDuckGoBangsRemover(searchQuery):
-  if searchQuery[-2:] == " !":
-    return searchQuery[:-2] + "!"
-  else:
-    return searchQuery
-
-def webSearcher(inputClaim, urlBanList):
+  reversedQuery = searchQuery[::-1]
+  newQuery = reversedQuery.replace("!", "!\\",1)[::-1]
+  return newQuery  
   
-  inputClaim = duckDuckGoBangsRemover(inputClaim)
+def webSearcher(inputClaim, urlBanList):
 
   urlList = []
   urlTitleList = []
   urlBodyList = []
   maxSearchResults = 20
-  duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
   
+  try:
+    duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
+  except:
+    inputClaim = duckDuckGoBangsRemover(inputClaim)
+    duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
+  else:
+    inputClaim = duckDuckGoBangsRemover(inputClaim)
+    duckDuckGoTextSearchGenerator = duckDuckGoSearch(inputClaim)
+    
   for searchResult in duckDuckGoTextSearchGenerator:
 
     if len(urlList) != maxSearchResults:

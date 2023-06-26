@@ -1,0 +1,37 @@
+{% extends "base.html" %} 
+
+{% block titleTagPlaceHolder %}
+Filipino Fake News Detector Prediction: {{inputClaim}}
+{% endblock %}
+
+{% block bodyTagPlaceHolder %}
+<div class="container">
+    
+    <div style="text-align: left;">
+
+        <h><b>Filipino Fake News Detector</b></h>
+        <p>The claim "{{inputClaim}}" is <b>{{predictionPercentage}}% {{predictionMessage}}!</b></p>
+
+        {% if numberOfEvidences != 0 %}        
+        
+            <p>Here are some evidences associated with your claim:</p>
+            
+            <ul>
+                {% for index in range(numberOfEvidences) %}
+                    <li><a href={{topEvidencesDetails[0][index]}}>{{topEvidencesDetails[1][index]}}</a></li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            <p>No evidences were found to be associated with your claim.</p>
+        {% endif %}
+        
+    </div>
+
+    <br><br><br>
+    <form method="get" action="/">
+        <button type="submit">Try another claim.</button>
+    </form>
+
+</div>
+{% endblock %}

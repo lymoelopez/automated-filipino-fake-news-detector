@@ -1,0 +1,31 @@
+<html>
+<head>
+
+    <title>{% block titleTagPlaceHolder %}{% endblock %}</title>
+    <meta name="viewport", content="width=device-width, initial-scale=1.0">
+    
+    {% block headTagPlaceHolder %}{% endblock %}
+
+    <style>
+        html, body {
+            margin: 5%;
+            padding: 0;
+            font-size: 18px;
+        }
+        .container{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+    </style>
+    
+</head>
+
+<body> 
+{% block bodyTagPlaceHolder %}{% endblock %}
+</body>
+
+{% block htmlTagPlaceHolder %}{% endblock %}
+
+</html>

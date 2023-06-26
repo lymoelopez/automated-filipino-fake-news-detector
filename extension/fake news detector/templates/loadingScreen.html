@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block titleTagPlaceHolder %} Generating Prediction {% endblock %}
+
+{% block headTagPlaceHolder %} 
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='loadingAnimation.css') }}"/> 
+{% endblock %}
+
+{% block bodyTagPlaceHolder %}
+<div class="container">
+  <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+
+  <br><br><br>
+  Please wait. Generating prediction . . .
+
+  <br><br>
+  <form method="get" action="/">
+    <button type="submit">cancel</button>
+  </form>
+
+</div>
+{% endblock %}
+
+{% block htmlTagPlaceHolder %}
+<script> window.location.replace('/prediction?inputClaim={{inputClaim}}'); </script>
+{% endblock %}
+
+

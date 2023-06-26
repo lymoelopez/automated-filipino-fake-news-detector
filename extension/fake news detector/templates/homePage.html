@@ -1,0 +1,23 @@
+{% extends "base.html" %} 
+
+{% block titleTagPlaceHolder %}Filipino Fake News Detector{% endblock %}
+
+{% block bodyTagPlaceHolder %}
+<form method = 'POST'>
+<div class="container">
+
+    <div style="text-align: left;">
+        <h><b>Filipino Fake News Detector</b></h>
+        <p><label for='text'>Enter your claim:</label>
+        <input name='text' id='text'></p>
+    </div>
+
+    <br><br><br>
+    <input type='submit' value='Predict'>
+    {% if withErrorMessage %}
+        <p>*no claim entered*<p>
+    {% endif %}
+
+</div>
+</form>
+{% endblock %}

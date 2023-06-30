@@ -1,5 +1,5 @@
 def findLLMmmessage(evidence, claim, llmWithPromptTemplate):
-  message = llmWithPromptTemplate.run({"evidence": evidence, "claim": claim})
+  message = llmWithPromptTemplate.run({"claim": claim})
   return message
 
 def llmClassifier (inputClaim, evidence, llmWithPromptTemplate):

@@ -26,7 +26,7 @@ def findLLMHuggingFacePipeline(llmModelID, task="text2text-generation"):
 def findLLM(llmModelID, promptStringTemplate):
 
   llmPromptTemplate = PromptTemplate(
-    input_variables=["evidence", "claim"],
+    input_variables=["claim"],
     template=promptStringTemplate
   )
 
@@ -66,12 +66,10 @@ def automatedFakeNewsConfig(
     cosineSimilarityModelID = "danjohnvelasco/filipino-sentence-roberta-v1", 
     llmModelID = "google/flan-t5-base",
     currentDate = findCurrentDateInText(),
-    llmQuestion = "Question: can the Claim be inferred from the given Evidence? ",
+    llmQuestion = "Question: is the given Claim true? ",
 ):
   
-  promptStringTemplate = """Evidence: {evidence}
-
-      Claim: {claim}
+  promptStringTemplate = """Claim: {claim}
 
       """ + f"""Current Date: {currentDate}
 

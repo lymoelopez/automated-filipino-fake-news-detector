@@ -33,7 +33,9 @@ def automatedFakeNewsTestingPipeline2(inputClaim, filteredSearchResults, topEvid
   if len(filteredSearchResults[0]) == 0:
     finalPrediction = 1
     topEvidencesUrl = []
-    
+    predictionPercentage = 100 
+    classificationOfEachEvidence = [] 
+    highestSimilarityScores = []
   else:
     inputClaim = inputClaim.lower()
     urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate = config

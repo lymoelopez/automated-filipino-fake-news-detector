@@ -5,6 +5,7 @@ from automatedFakeNewsConfig import automatedFakeNewsConfig
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from progressBar import progressBar, testingProgress
 import numpy as np
+import ast
 
 
 def findTopList(givenList, topIndex):
@@ -26,7 +27,7 @@ def findIndexOfTopEvidences(urlList, topEvidencesUrl):
 
 predictionProgressBar = testingProgress()
 
-def automatedFakeNewsTestingPipeline2(inputClaim, filteredSearchResults, topEvidencesUrl, config=automatedFakeNewsConfig(currentDate="June 09 2023")):
+def automatedFakeNewsTestingPipeline2(inputClaim, filteredSearchResults, topEvidencesUrlInString, config=automatedFakeNewsConfig(currentDate="June 09 2023")):
 
   predictionProgressBar.showProgress()
   
@@ -41,11 +42,16 @@ def automatedFakeNewsTestingPipeline2(inputClaim, filteredSearchResults, topEvid
     urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate = config
 
     urlList, urlTitleList, urlBodyList = filteredSearchResults
+
+    
     try:
-      indexOfTopEvidences = findIndexOfTopEvidences(urlList, topEvidencesUrl)
+      topEvidencesUrl = ast.literal_eval(topEvidencesUrlInString)
     except:
-      topEvidencesUrl = [topEvidencesUrl]
-      indexOfTopEvidences = findIndexOfTopEvidences(urlList, topEvidencesUrl)
+      topEvidencesUrlInString = "['" + topEvidencesUrlInString + "']"
+      topEvidencesUrl = ast.literal_eval(topEvidencesUrlInString)
+      
+
+    indexOfTopEvidences = findIndexOfTopEvidences(urlList, topEvidencesUrl)
       
 
     

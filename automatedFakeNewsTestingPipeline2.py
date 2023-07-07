@@ -41,8 +41,8 @@ def automatedFakeNewsTestingPipeline2(inputClaim, filteredSearchResults, topEvid
     urlList, urlTitleList, urlBodyList = filteredSearchResults
     indexOfTopEvidences = findIndexOfTopEvidences(urlList, topEvidencesUrl)
     
-    topEvidencesTitle = findTopList(urlTitleList, highestSimilarityScoresIndex)
-    topEvidencesBody = findTopList(urlBodyList, highestSimilarityScoresIndex)    
+    topEvidencesTitle = findTopList(urlTitleList, indexOfTopEvidences)
+    topEvidencesBody = findTopList(urlBodyList, indexOfTopEvidences)    
     topSearchResults =  [topEvidencesUrl, topEvidencesTitle, topEvidencesBody]
     
     topEvidences, highestSimilarityScores = evidenceSelector(inputClaim, topSearchResults, cosineSimilarityModel)

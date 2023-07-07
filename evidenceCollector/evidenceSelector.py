@@ -14,7 +14,7 @@ def findSimilarityScores(inputClaim, urlContentList, cosineSimilarityModel):
   similarityScores = util.cos_sim(claimSentenceEmbeddings, candidateEvidenceSentenceEmbeddings)[0]
   highestSimilarityScores, highestSimilarityScoresIndex = torch.topk(similarityScores, k=numberOfEvidences)
 
-  return highestSimilarityScores, highestSimilarityScoresIndex
+  return highestSimilarityScores.cpu().numpy(), highestSimilarityScoresIndex.cpu().numpy()
   
 def findTopList(givenList, topIndex):
   numpyList = np.array(givenList)

@@ -41,7 +41,13 @@ def automatedFakeNewsTestingPipeline2(inputClaim, filteredSearchResults, topEvid
     urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate = config
 
     urlList, urlTitleList, urlBodyList = filteredSearchResults
-    indexOfTopEvidences = findIndexOfTopEvidences(urlList, topEvidencesUrl)
+    try:
+      indexOfTopEvidences = findIndexOfTopEvidences(urlList, topEvidencesUrl)
+    except:
+      topEvidencesUrl = [topEvidencesUrl]
+      indexOfTopEvidences = findIndexOfTopEvidences(urlList, topEvidencesUrl)
+      
+
     
     topEvidencesTitle = findTopList(urlTitleList, indexOfTopEvidences)
     topEvidencesBody = findTopList(urlBodyList, indexOfTopEvidences)    

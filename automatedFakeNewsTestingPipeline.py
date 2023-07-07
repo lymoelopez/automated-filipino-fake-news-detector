@@ -25,6 +25,7 @@ def automatedFakeNewsTestingPipeline(inputClaim, filteredSearchResults, config=a
     topEvidencesUrl = topEvidences[1]
 
     preprocessedClaim, preprocessedEvidences = preprocessingLayer(inputClaim, topEvidencesContent)
-    finalPrediction = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate)
-
+    predictionDetails  = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate)
+    finalPrediction = predictionDetails[0]
+  
   return finalPrediction, topEvidencesUrl

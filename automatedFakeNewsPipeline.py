@@ -10,13 +10,16 @@ def automatedFakeNewsPipeline(inputClaim, config=automatedFakeNewsConfig()):
   inputClaim = inputClaim.lower()
   urlBanList, cosineSimilarityModel, llm, llmWithPromptTemplate = config
   topEvidences, highestSimilarityScores = evidenceCollector(inputClaim, urlBanList, cosineSimilarityModel)
+  
   topEvidencesContent = topEvidences[0]
   topEvidencesDetails = topEvidences[1:]
-
-  if len(topEvidencesContent) == 0:
-    finalPrediction = 1
+  numberOfEvidences = len(topEvidencesContent)
+  topEvidencesDetails.append(numberOfEvidences)
+  
+  if numberOfEvidences == 0:
+    predictionDetails = [1, 100]
   else:
     preprocessedClaim, preprocessedEvidences = preprocessingLayer(inputClaim, topEvidencesContent)
-    finalPrediction = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate)
+    predictionDetails = classificationLayer(preprocessedClaim, preprocessedEvidences, highestSimilarityScores, llmWithPromptTemplate)
 
-  return finalPrediction, topEvidencesDetails 
+  return predictionDetails, topEvidencesDetails

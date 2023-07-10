@@ -66,7 +66,7 @@ def automatedFakeNewsConfig(
     cosineSimilarityModelID = "danjohnvelasco/filipino-sentence-roberta-v1", 
     llmModelID = "google/flan-t5-base",
     currentDate = findCurrentDateInText(),
-    llmQuestion = "Question: can the Claim be inferred from the given Evidence? ",
+    llmQuestion = "Question: is the claim true based on the given evidence? ",
 ):
   
   promptStringTemplate = """Evidence: {evidence}
